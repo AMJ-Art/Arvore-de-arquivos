@@ -5,7 +5,7 @@ Primeiro commit no Github! ("Hello, world!" pra dar bênção)
 ## 👥 Integrantes
 - Artur Mesquita Jeager (188354)
 - João Pedro de Oliveira de Carvalho (188402)
-- Octávio Francisco Petry Bortoluzzi 
+- Octávio Francisco Petry Bortoluzzi (188380)
 
 ---
 
@@ -16,6 +16,42 @@ Primeiro commit no Github! ("Hello, world!" pra dar bênção)
 ---
 
 ## 🧪 Instruções de compilação/execução.
+### ✅ Pré-requisitos
+- Sistema: GNU/Linux
+- Compilador: g++ com suporte a C++17 (ou superior)
+Para instalar o g++, execute (caso ainda não tenha):
+```bash
+sudo apt update
+sudo apt install g++
+```
+
+
+### 📂 1. Salvando o Código
+Salve o código-fonte em um arquivo, por exemplo:
+```bash
+ArvoreArq.cpp
+```
+
+
+### 🧱 2. Compilando o Código
+No terminal, acesse a pasta onde está o arquivo e compile com:
+```bash
+g++ -std=c++17 -Wall -o ArvoreArq ArvoreArq.cpp
+```
+Explicando os parâmetros:
+- `-std=c++17` → ativa a versão C++17 (necessária para `<filesystem>`)
+- `-Wall` → mostra todos os avisos úteis
+- `-o gerenciador` → define o nome do executável como `ArvoreArq`
+
+### 🚀 3. Executando o Programa
+- Para usar o diretório atual:
+```bash
+./ArvoreArq
+```
+- Para usar um diretório específico:
+```bash
+./ArvoreArq /home/octavio-petry/Downloads
+```
 
 ---
 
@@ -64,4 +100,5 @@ Downloads (8 filhos, 114780457 bytes)
         ├── threadsret.c (739 bytes)
         ├── acelera.c (1587 bytes)
         └── threadscargs.c (754 bytes)
+```
 
