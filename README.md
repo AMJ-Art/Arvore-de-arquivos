@@ -57,7 +57,7 @@ Explicando os parâmetros:
 
 ## 🎯 Exemplos de Execução
 
-### ArvoreArq v1.0:
+### 🌱 ArvoreArq v1.0:
 ```bash
 ./ArvoreArq /home/octavio-petry/Downloads
 Carregando estrutura de arquivos a partir de: "/home/octavio-petry/Downloads"
