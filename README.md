@@ -18,7 +18,7 @@ Primeiro commit no Github! ("Hello, world!" pra dar bênção)
 ## 🧪 Instruções de compilação/execução.
 ### ✅ Pré-requisitos
 - Sistema: GNU/Linux
-- Compilador: g++ com suporte a C++17 (ou superior)
+- Compilador: `g++` com suporte a __C++17__ (ou superior)
 Para instalar o g++, execute (caso ainda não tenha):
 ```bash
 sudo apt update
