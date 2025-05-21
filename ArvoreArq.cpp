@@ -46,25 +46,39 @@ shared_ptr<Node> construir_arvore(const fs::path& caminho) {
     return no; // Retorna o nó construído
 }
 
-//ATUALIZAR ESSA FUNÇÃO POSTERIORMENTE
-// Função recursiva para exibir a árvore formatada na tela
-void exibir_arvore(const shared_ptr<Node>& no, int nivel = 0) {
-    string indent(nivel * 4, ' '); // Indentação baseada na profundidade (nível da árvore)
+// Função recursiva para exibir a árvore com símbolos gráficos
+// prefixo → string usada para criar a indentação visual (ex: "│   ")
+// eh_ultimo → indica se o nó atual é o último filho do pai (usado para decidir └── ou ├──)
+void exibir_arvore(const shared_ptr<Node>& no, const string& prefixo = "", bool eh_ultimo = true) {
+    // Imprime a indentação acumulada (prefixo)
+    cout << prefixo;
 
+    // Se não estivermos no nó raiz, imprimimos o "galho" └── ou ├──
+    if (!prefixo.empty()) {
+        cout << (eh_ultimo ? "└── " : "├── ");
+    }
+
+    // Exibe informações do nó atual
     if (no->eh_pasta) {
-        // Exibe nome da pasta, número de filhos e tamanho total acumulado
-        cout << indent << no->nome << " (" << no->filhos.size()
-             << " filhos, " << no->tamanho << " bytes)" << endl;
+        // Se for pasta, exibe nome, número de filhos e tamanho total
+        cout << no->nome << " (" << no->filhos.size() << " filhos, " << no->tamanho << " bytes)" << endl;
 
-        // Exibe todos os filhos recursivamente, aumentando o nível (indentação)
-        for (const auto& filho : no->filhos) {
-            exibir_arvore(filho, nivel + 1);
+        // Percorre todos os filhos da pasta
+        for (size_t i = 0; i < no->filhos.size(); ++i) {
+            // Verifica se este é o último filho (para ajustar o prefixo e o símbolo └──)
+            bool ultimo_filho = (i == no->filhos.size() - 1);
+
+            // Chama recursivamente com prefixo ajustado:
+            // Se este nó é o último, o prefixo recebe "    "
+            // Caso contrário, o prefixo recebe "│   " para manter a linha vertical
+            exibir_arvore(no->filhos[i], prefixo + (eh_ultimo ? "    " : "│   "), ultimo_filho);
         }
     } else {
-        // Exibe nome e tamanho do arquivo
-        cout << indent << no->nome << " (" << no->tamanho << " bytes)" << endl;
+        // Se for arquivo, exibe apenas nome e tamanho
+        cout << no->nome << " (" << no->tamanho << " bytes)" << endl;
     }
 }
+
 
 // Menu interativo para o usuário escolher opções
 void menu(const shared_ptr<Node>& raiz) {
@@ -79,6 +93,9 @@ void menu(const shared_ptr<Node>& raiz) {
 
         switch (opcao) {
             case 1:
+                // Exibe o caminho raiz antes da árvore
+                cout << raiz->caminho << " (" << raiz->filhos.size()
+                     << " filhos, " << raiz->tamanho << " bytes)" << endl;
                 exibir_arvore(raiz); // Chama função para exibir árvore
                 break;
             case 2:
