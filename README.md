@@ -30,6 +30,7 @@ Carregando estrutura de arquivos a partir de: "/home/octavio-petry/Downloads"
 1. Exibir árvore completa
 2. Sair
 Escolha uma opção: 1
+/home/octavio-petry/Downloads (8 filhos, 114780457 bytes)
 Downloads (8 filhos, 114780457 bytes)
     ├── google-chrome-stable_current_amd64.deb (114483440 bytes)
     ├── mercado (17024 bytes)
