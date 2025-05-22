@@ -1,5 +1,3 @@
-Primeiro commit no Github! ("Hello, world!" pra dar bênção)
-
 # 🌳 Sistema de Arquivos como Árvore
 
 ## 👥 Integrantes
