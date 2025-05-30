@@ -9,7 +9,7 @@
 
 ## ⚙️ Especificações do Projeto:
 - Plataforma: Linux
-- Linguagem: CPP
+- Linguagem: C++ (padrão C++17)
   
 ---
 
