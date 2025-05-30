@@ -9,6 +9,7 @@
 
 ## ⚙️ Especificações do Projeto:
 - Plataforma: Linux
+    - Notebook Octavio Linux → Ubuntu 24.04.2 LTS
 - Linguagem: C++ (padrão C++17)
   
 ---
