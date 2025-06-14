@@ -142,6 +142,8 @@ int main(int argc, char* argv[]) {
 
     // Valida se o caminho existe no sistema de arquivos e se é um diretório(e não um arquivo comum)
     // Se não for, exibe uma mensagem de erro e encerra o programa
+    /* @cerr é usado para exibir mensagens de erro no console, ajudando a diferençar entre mensagens normais e de erro,
+       tambem pode ser usado o cout, porem como queremos mostrar um erro é uma boa prático deixar 'cerr'*/
     if (!fs::exists(caminho_inicial) || !fs::is_directory(caminho_inicial)) {
         cerr << "Diretório inválido: " << caminho_inicial << endl;
         return 1;
