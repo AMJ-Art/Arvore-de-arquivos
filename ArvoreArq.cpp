@@ -3,16 +3,19 @@
     //PASSAR PARA HTML
 
 // Inclusão das bibliotecas necessárias
-#include <iostream>       // Para entrada e saída padrão (cout, cin)
-#include <vector>         // Para usar vetor (std::vector)
-#include <string>         // Para manipulação de strings (std::string)
+#include <iostream>       // Para entrada e saída padrão
+#include <vector>         // Para usar vetor
+#include <string>         // Para manipulação de strings
 #include <filesystem>     // Para manipular o sistema de arquivos (disponível no C++17+)
-#include <iomanip>        // Para futuras formatações (não usado diretamente aqui)
+#include <iomanip>        // Para formatações
 
 using namespace std;
 namespace fs = filesystem;     // Alias para facilitar o uso de std::filesystem
 
 // Estrutura que representa um nó na árvore de arquivos
+/* @uintmax_t foi utilizado nesse contexto porque é um tido de dado inteiro sem sinal, ou seja apenas numeros positivos,
+   que é usado para armazenar valores muito grandes, o que é útil para representar tamanhos de arquivos, por que ele é util
+   nesse caso? pois como um arquivo ou diretório não pode ter tamanho negativo, o uso de uintmax_t é apropriado. */
 struct Node {
     string nome;                     // Nome do arquivo ou diretório
     string caminho;                  // Caminho completo até o arquivo/pasta
@@ -22,13 +25,16 @@ struct Node {
 };
 
 // Função recursiva que constrói a árvore de arquivos
+// @Node* é um ponteiro para um nó da árvore, que permite a construção de uma estrutura de dados dinâmica
 Node* construir_arvore(const fs::path& caminho) {
     Node* no = new Node();                            // Aloca memória para um novo nó
     no->nome = caminho.filename().string();           // Define o nome do nó (somente o nome final)
     no->caminho = caminho.string();                   // Armazena o caminho completo
-    no->eh_pasta = fs::is_directory(caminho);         // Verifica se é pasta
+    no->eh_pasta = fs::is_directory(caminho);         // Verifica a partir do caminho se é pasta ou não
     no->tamanho = 0;                                  // Inicializa o tamanho
 
+    // IF - Se o nó for uma pasta, percorre os arquivos e subpastas dentro dela
+    // ELSE - Se for um arquivo, o tamanho será obtido diretamente
     if (no->eh_pasta) {
         // Percorre todos os elementos do diretório
         for (const auto& entry : fs::directory_iterator(caminho)) {
@@ -40,19 +46,22 @@ Node* construir_arvore(const fs::path& caminho) {
             }
         }
     } else {
-        no->tamanho = fs::file_size(caminho);         // Obtém o tamanho do arquivo
+        no->tamanho = fs::file_size(caminho);  // Obtém o tamanho do arquivo
     }
 
     return no; // Retorna o ponteiro para o nó criado
 }
 
 // Função recursiva que exibe a árvore com indentação e símbolos gráficos
-// prefixo: string, inicialmente vazia, usada para desenhar os "galhos" da árvore
-// eh_ultimo: define se este nó é o último filho do seu pai (para usar └── ou ├──)
+/* @prefixo: string, inicialmente vazia, usada para desenhar os "galhos" da árvore, e pode ser modificada
+   a cada recursiva*/
+/* @eh_ultimo: bool, que define se este nó é o último filho do seu pai (para usar └── ou ├──), ele é modificado
+   a cada recursiva pelo ultimo_filho, que verifica se o nó atual é o último filho do pai.*/
 void exibir_arvore(Node* no, const string& prefixo = "", bool eh_ultimo = true) {
     cout << prefixo; // Printa o prefixo
 
-    // Se não estiver vazio, imprimimos o "galho" └── ou ├──
+    // Se o prefixo não estiver vazio entra no IF
+    // Caso for o último nó, usa └──, caso contrário usa ├──
     if (!prefixo.empty()) {
         cout << (eh_ultimo ? "└── " : "├── "); // Escolhe o símbolo adequado
     }
@@ -105,19 +114,20 @@ void menu(Node* raiz) {
         }
 
         switch (opcao) {
-            case 1:
-                // Exibe a raiz e chama a função que mostra a árvore
-                cout << "\n"
-                     << raiz->caminho << " (" 
-                     << raiz->filhos.size() << " filhos, " 
-                     << raiz->tamanho << " bytes)" << endl;
-                exibir_arvore(raiz);
+            case 1:                         // Caso 1: Exibe a árvore completa
+                cout << "\n"                // Exibe o caminho, quantidade de filhos e tamanho total para melhor entendimento da visualização
+                     << raiz->caminho 
+                     << " (" << raiz->filhos.size() 
+                     << " filhos, " << raiz->tamanho 
+                     << " bytes)" << endl;
+                exibir_arvore(raiz);        // Exibe a árvore completa a partir da raiz
                 cout << endl;
-                break;
-            case 2:
+                break;                
+            
+            case 2:                          // Caso 2: Sair do programa
                 cout << "Encerrando...\n";   // Finaliza o programa
                 break;
-            default:
+            default:                         // Caso inválido: Opção fora do menu          
                 cout << "Opção inválida.\n"; // Opção fora do menu
         }
 
@@ -127,9 +137,11 @@ void menu(Node* raiz) {
 // Função principal do programa
 int main(int argc, char* argv[]) {
     // Define o diretório inicial com base nos argumentos da linha de comando
+    // Se um caminho for passado como argumento, usa esse caminho; caso contrário, usa o diretório atual definido por fs::current_path()
     fs::path caminho_inicial = (argc > 1) ? fs::path(argv[1]) : fs::current_path();
 
-    // Valida se o caminho existe e é um diretório
+    // Valida se o caminho existe no sistema de arquivos e se é um diretório(e não um arquivo comum)
+    // Se não for, exibe uma mensagem de erro e encerra o programa
     if (!fs::exists(caminho_inicial) || !fs::is_directory(caminho_inicial)) {
         cerr << "Diretório inválido: " << caminho_inicial << endl;
         return 1;
@@ -137,15 +149,16 @@ int main(int argc, char* argv[]) {
 
     cout << "Carregando estrutura de arquivos a partir de: " << caminho_inicial << "\n";
 
-    // Constrói a árvore de arquivos e pastas a partir do caminho inicial
+    // Constrói a árvore de arquivos e pastas a partir do caminho inicial e armazena o ponteiro na raiz
     Node* raiz = construir_arvore(caminho_inicial);
 
-    // Inicia/chama o menu interativo
+    // Inicia/chama o menu interativo com a raiz da árvore
+    // O menu permite ao usuário interagir com a árvore, exibindo-a ou saindo do programa
     menu(raiz);
 
-    // Libera a memória usada pela árvore ao final do programa
+    // Libera a memória usada pela árvore ao final do programa em uma função recursiva
+    // Isso é importante para evitar vazamentos de memória
     deletar_arvore(raiz);
 
     return 0;
 }
-
