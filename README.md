@@ -53,13 +53,13 @@ Explicando os parâmetros:
 ```
 - Para quando houver espaços nos nomes dos aquivos utilizar "aspas-duplas"
 ```bash
-./ArvoreArq "/media/octavio-petry/Acer/FACULDADE CC/CC 2025 1 - Nivel III/Estrutura de Dados II/Trabalho Final - Árvore do Sistema de Arquivos"
+./ArvoreArq "/media/octavio-petry/Acer/FACULDADE CC/CC 2025 1 - Nivel III/Estrutura de Dados II"
 ```
 ---
 
 ## 🎯 Exemplos de Execução
 
-### 🌱 ArvoreArq v1.0:
+### 🌱 ArvoreArq v1.0 - Com Indentação:
 ```bash
 ./ArvoreArq /home/octavio-petry/Downloads
 Carregando estrutura de arquivos a partir de: "/home/octavio-petry/Downloads"
@@ -104,7 +104,7 @@ Downloads (8 filhos, 114780457 bytes)
         └── threadscargs.c (754 bytes)
 ```
 
-### 🌱 ArvoreArq v1.0 Sem Indentação:
+### 🌱 ArvoreArq v1.0 - Sem Indentação:
 ```
 /home/octavio-petry/Downloads (8 filhos, 114780457 bytes)
 google-chrome-stable_current_amd64.deb (114483440 bytes)
