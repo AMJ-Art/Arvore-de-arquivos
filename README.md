@@ -2,9 +2,11 @@
 
 ## 👥 Integrantes
 - Artur Mesquita Jeager (188354)
+    - Implementação do Exportar a árvore para HTML.
 - João Pedro de Oliveira de Carvalho (188402)
+    - Implementação das Pesquisas.
 - Octávio Francisco Petry Bortoluzzi (188380)
-
+    - Implementação da construção da árvore e exibição.
 ---
 
 ## ⚙️ Especificações do Projeto:
