@@ -38,7 +38,7 @@ Node* construir_arvore(const fs::path& caminho) {
     if (no->eh_pasta) {
         // Percorre todos os elementos do diretório
         for (const auto& entry : fs::directory_iterator(caminho)) {
-            // Considera apenas arquivos regulares e subpastas
+            // Considera apenas arquivos regulares e subpastas(ignorar links, dispositivos, sockets, etc...)
             if (fs::is_regular_file(entry) || fs::is_directory(entry)) {
                 Node* filho = construir_arvore(entry.path()); // Cria recursivamente o filho
                 no->filhos.push_back(filho);                  // Adiciona o filho ao vetor de filhos
