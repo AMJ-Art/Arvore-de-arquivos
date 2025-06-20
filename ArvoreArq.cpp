@@ -134,6 +134,36 @@ void menu(Node* raiz) {
     } while (opcao != 2); // Continua até o usuário escolher "Sair" digitando 2
 }
 
+
+void shoBigFile()
+{ // exibe arquivos que possuem o maior tamanho
+}
+
+void shoOverXfile()
+{ // exibe arquivos com tamanho maior que X
+}
+
+void shoWideDir()
+{ // exibe folder com maior numero de arquivos (direto)
+}
+
+void shoExtFile()
+{ // exibe arquivos com extensão especifica
+    string extInp;
+    cin >> extInp;
+    
+}
+
+void shoEmptyDir()
+{ // exibe folder vazio
+}
+
+int main()
+{
+    return 0;
+}
+
+
 // Função principal do programa
 int main(int argc, char* argv[]) {
     // Define o diretório inicial com base nos argumentos da linha de comando
