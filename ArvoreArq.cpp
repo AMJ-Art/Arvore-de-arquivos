@@ -158,12 +158,6 @@ void shoEmptyDir()
 { // exibe folder vazio
 }
 
-int main()
-{
-    return 0;
-}
-
-
 // Função principal do programa
 int main(int argc, char* argv[]) {
     // Define o diretório inicial com base nos argumentos da linha de comando
