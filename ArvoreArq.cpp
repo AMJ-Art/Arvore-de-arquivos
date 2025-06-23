@@ -95,6 +95,27 @@ void deletar_arvore(Node* no) {
     delete no; // Libera o próprio nó
 }
 
+
+void shoExtFile(Node *no, string extInp)
+{ // exibe arquivos com extensão especifica
+
+    if (no->nome.size() >= extInp.size() && std::equal(no->nome.end() - extInp.size(), no->nome.end(), extInp.begin()))
+    {
+        cout << "\n" << no->caminho << "\n";
+    }
+    if (no->eh_pasta)
+    {
+        for (size_t i = 0; i < no->filhos.size(); ++i)
+        {
+            shoExtFile(no->filhos[i], extInp);
+        }
+    }
+    return;
+}
+
+// Função que exibe o menu e processa as escolhas do usuário
+
+
 // Função que exibe o menu e processa as escolhas do usuário
 void menu(Node* raiz) {
     int opcao;
@@ -103,6 +124,7 @@ void menu(Node* raiz) {
         cout << "\n=== MENU ===\n";
         cout << "1. Exibir árvore completa\n";
         cout << "0. Sair\n";
+        cout << "2. exibir arquivos com ext especial\n";
         cout << "Escolha uma opção: ";
 
         // Validação para evitar erro caso o usuário digite letras
@@ -127,6 +149,12 @@ void menu(Node* raiz) {
             case 0:                          // Caso 0: Sair do programa
                 cout << "Encerrando...\n";   // Finaliza o programa
                 break;
+
+            case 2:
+                cout << "Target extension: ";
+                cin >> trg;
+                shoExtFile(raiz, trg);
+                break;
             default:                         // Caso inválido: Opção fora do menu          
                 cout << "Opção inválida.\n"; // Opção fora do menu
         }
@@ -145,13 +173,6 @@ void shoOverXfile()
 
 void shoWideDir()
 { // exibe folder com maior numero de arquivos (direto)
-}
-
-void shoExtFile()
-{ // exibe arquivos com extensão especifica
-    string extInp;
-    cin >> extInp;
-    
 }
 
 void shoEmptyDir()
