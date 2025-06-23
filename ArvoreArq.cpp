@@ -102,7 +102,7 @@ void menu(Node* raiz) {
         //Exibe o menu
         cout << "\n=== MENU ===\n";
         cout << "1. Exibir árvore completa\n";
-        cout << "2. Sair\n";
+        cout << "0. Sair\n";
         cout << "Escolha uma opção: ";
 
         // Validação para evitar erro caso o usuário digite letras
@@ -124,14 +124,14 @@ void menu(Node* raiz) {
                 cout << endl;
                 break;                
             
-            case 2:                          // Caso 2: Sair do programa
+            case 0:                          // Caso 0: Sair do programa
                 cout << "Encerrando...\n";   // Finaliza o programa
                 break;
             default:                         // Caso inválido: Opção fora do menu          
                 cout << "Opção inválida.\n"; // Opção fora do menu
         }
 
-    } while (opcao != 2); // Continua até o usuário escolher "Sair" digitando 2
+    } while (opcao != 0); // Continua até o usuário escolher "Sair" digitando 0
 }
 
 
