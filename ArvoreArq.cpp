@@ -1,6 +1,3 @@
-    //O QUE FALTA ATÉ O MOMENTO
-    //EXIBIR O MAIOR TAMANHO E SEU ARQUIVO/PASTA
-
 // Inclusão das bibliotecas necessárias
 #include <iostream>       // Para entrada e saída padrão
 #include <vector>         // Para usar vetor
