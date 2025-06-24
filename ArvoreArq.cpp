@@ -273,11 +273,11 @@ do {
     
     //Exibe o submenu search
     cout << "\n=== SEARCH MENU ===\n";
-    cout << "1. Exibir arquivos com extensão especifica\n";
-    cout << "2. exibir os maiores arquivos\n";
-    cout << "3. exibir pastas vazias\n";
-    cout << "4. exibir pastas mais largas\n";
-    cout << "5. exibir arquivos maiores que determinado tamanho\n";
+    cout << "1. Exibir arquivos com extensão específica\n";
+    cout << "2. Exibir maior(es) arquivo(s)\n";
+    cout << "3. Exibir pasta(s) vazia(s)\n";
+    cout << "4. Exibir pasta(s) com mais arquivos \n";
+    cout << "5. Exibir arquivos maiores que determinado tamanho\n";
     cout << "0. Sair\n";
     cout << "Escolha uma opção: ";
 
@@ -294,23 +294,31 @@ do {
         case 1:
             cout << "Target extension: ";
             cin >> trg;
+            cout << "Exibindo arquivos com extensão (" << trg << "): \n";
             shoExtFile(root, trg);
             break;
         case 2:
+            cout << "Exibindo maior(es) arquivo(s):\n";
             shoBigFile(root);
             break;
         case 3:
+            cout << "Exibindo pasta(as) vazia(as):\n";
             shoEmpDir(root);
             break;
         case 4:
+            cout << "Exibindo pasta(as) com mais arquivos:\n";
             shoWideDir(root);
             break;
         case 5:
             cout << "Target size: ";
             cin >> tgSz;
+            if(tgSz < 0) { // Verifica se o tamanho é negativo
+                cout << "Tamanho inválido. Deve ser um número positivo.\n";
+                break;
+            }
+            cout << "Exibindo arquivos maiores que " << tgSz << " bytes:\n";
             shoOverXfile(root, tgSz);
             break;
-
         case 0:                          // Caso 0: Sair do programa
             cout << "Encerrando...\n";   // Finaliza o programa
             break;
@@ -332,7 +340,7 @@ void menu(Node *raiz)
         cout << "\n=== MENU ===\n";
         cout << "1. Exibir árvore completa\n";
         cout << "2. Exportar arvore para HTML\n";
-        cout << "3. submenu de busca\n";
+        cout << "3. Pesquisas\n";
         cout << "0. Sair\n";
         cout << "Escolha uma opção: ";
 
