@@ -211,6 +211,7 @@ void menu(Node* raiz) {
         cout << "1. Exibir árvore completa\n";
         cout << "2. Exportar arvore para HTML\n";
         cout << "3. Exibir arquivos com ext especial\n";
+        cout << "4. Exibir arquivos de maior tamanho\n";
         cout << "0. Sair\n";
         cout << "Escolha uma opção: ";
 
@@ -242,6 +243,9 @@ void menu(Node* raiz) {
                 cout << "Target extension: ";
                 cin >> trg;
                 shoExtFile(raiz, trg);
+                break;
+            case 4:
+                shoBigFile(raiz);
                 break;
 
             case 0:                          // Caso 0: Sair do programa
