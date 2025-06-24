@@ -205,64 +205,109 @@ void shoBigFile(Node* no)
     printBIG(no, maxsz);
 }
 // Função que exibe o menu e processa as escolhas do usuário
-void menu(Node* raiz) {
-    int opcao;
-    string textoHtml;
+void subMenu(Node *root)
+{
     string trg;
-    do {
-        //Exibe o menu
-        cout << "\n=== MENU ===\n";
-        cout << "1. Exibir árvore completa\n";
-        cout << "2. Exportar arvore para HTML\n";
-        cout << "3. Exibir arquivos com ext especial\n";
-        cout << "4. Exibir arquivos de maior tamanho\n";
+    int opt;
+    do
+    {
+
+        // Exibe o submenu search
+        cout << "\n=== SEARCH MENU ===\n";
+        cout << "1. Exibir arquivos com extensão especifica\n";
+        cout << "2. exibir os maiores arquivos\n";
         cout << "0. Sair\n";
         cout << "Escolha uma opção: ";
 
         // Validação para evitar erro caso o usuário digite letras
-        if (!(cin >> opcao)) {
-            cin.clear();              // Limpa o estado de erro do cin
-            cin.ignore(10000, '\n');  // Descarta o restante da linha
+        if (!(cin >> opt))
+        {
+            cin.clear();             // Limpa o estado de erro do cin
+            cin.ignore(10000, '\n'); // Descarta o restante da linha
             cout << "Entrada inválida. Tente novamente.\n";
             continue;
         }
 
-        switch (opcao) {
-            case 1:                         // Caso 1: Exibe a árvore completa
-                cout << "\n"                // Exibe o caminho, quantidade de filhos e tamanho total para melhor entendimento da visualização
-                     << raiz->caminho
-                     << " (" << raiz->filhos.size()
-                     << " filhos, " << raiz->tamanho
-                     << " bytes)" << endl;
-                exibir_arvore(raiz);        // Exibe a árvore completa a partir da raiz
-                cout << endl;
-                break;
+        switch (opt)
+        {
 
-            case 2:
-                cout << "Criando HTML..." << "\n" << endl;
-                salvarArvoreHtml(raiz);
-                break;
+        case 1:
+            cout << "Target extension: ";
+            cin >> trg;
+            shoExtFile(root, trg);
+            break;
+        case 2:
+            shoBigFile(root);
+            break;
 
-            case 3:
-                cout << "Target extension: ";
-                cin >> trg;
-                shoExtFile(raiz, trg);
-                break;
-            case 4:
-                shoBigFile(raiz);
-                break;
+        case 0:                        // Caso 0: Sair do programa
+            cout << "Encerrando...\n"; // Finaliza o programa
+            break;
 
-            case 0:                          // Caso 0: Sair do programa
-                cout << "Encerrando...\n";   // Finaliza o programa
-                break;
+        default:                         // Caso inválido: Opção fora do menu
+            cout << "Opção inválida.\n"; // Opção fora do menu
+        }
 
-            default:                         // Caso inválido: Opção fora do menu
-                cout << "Opção inválida.\n"; // Opção fora do menu
+    } while (opt != 0); // Continua até o usuário escolher "Sair" digitando 0
+}
+
+// Função que exibe o menu e processa as escolhas do usuário
+void menu(Node *raiz)
+{
+    int opcao;
+    string textoHtml;
+
+    do
+    {
+        // Exibe o menu
+        cout << "\n=== MENU ===\n";
+        cout << "1. Exibir árvore completa\n";
+        cout << "2. Exportar arvore para HTML\n";
+        cout << "3. submenu de busca\n";
+        cout << "0. Sair\n";
+        cout << "Escolha uma opção: ";
+
+        // Validação para evitar erro caso o usuário digite letras
+        if (!(cin >> opcao))
+        {
+            cin.clear();             // Limpa o estado de erro do cin
+            cin.ignore(10000, '\n'); // Descarta o restante da linha
+            cout << "Entrada inválida. Tente novamente.\n";
+            continue;
+        }
+
+        switch (opcao)
+        {
+        case 1:          // Caso 1: Exibe a árvore completa
+            cout << "\n" // Exibe o caminho, quantidade de filhos e tamanho total para melhor entendimento da visualização
+                 << raiz->caminho
+                 << " (" << raiz->filhos.size()
+                 << " filhos, " << raiz->tamanho
+                 << " bytes)" << endl;
+            exibir_arvore(raiz); // Exibe a árvore completa a partir da raiz
+            cout << endl;
+            break;
+
+        case 2:
+            cout << "Criando HTML..." << "\n"
+                 << endl;
+            salvarArvoreHtml(raiz);
+            break;
+
+        case 3:
+            subMenu(raiz);
+            break;
+
+        case 0:                        // Caso 0: Sair do programa
+            cout << "Encerrando...\n"; // Finaliza o programa
+            break;
+
+        default:                         // Caso inválido: Opção fora do menu
+            cout << "Opção inválida.\n"; // Opção fora do menu
         }
 
     } while (opcao != 0); // Continua até o usuário escolher "Sair" digitando 0
 }
-
 
 
 void shoOverXfile()
