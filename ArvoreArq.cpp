@@ -189,18 +189,20 @@ uintmax_t getmaxsize(Node* no, uintmax_t maxsize)
     return maxsize;
 }
 
-void shoBigFile(Node* no)
-{ // exibe arquivos que possuem o maior tamanho
-    uintmax_t maxsz = getmaxsize(no, 0);
-
+void printBIG(Node* no, uintmax_t maxsz){
     if(no->tamanho==maxsz){
         cout << no->caminho << " (" << no->tamanho << " bytes)" <<"\n";
     }
     for (size_t i = 0; i < no->filhos.size(); ++i)
     {
-     shoBigFile(no->filhos[i]);   
+     printBIG(no->filhos[i], maxsz);   
     }
-    
+}
+
+void shoBigFile(Node* no)
+{ // exibe arquivos que possuem o maior tamanho
+    uintmax_t maxsz = getmaxsize(no, 0);
+    printBIG(no, maxsz);
 }
 // Função que exibe o menu e processa as escolhas do usuário
 void menu(Node* raiz) {
