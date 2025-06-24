@@ -165,7 +165,7 @@ void shoExtFile(Node *no, string extInp)
 
     if (no->nome.size() >= extInp.size() && std::equal(no->nome.end() - extInp.size(), no->nome.end(), extInp.begin()))
     {
-        cout << "\n" << no->caminho << "\n";
+        cout << no->caminho << " (" << no->tamanho << " bytes)" <<"\n";
     }
     if (no->eh_pasta)
     {
