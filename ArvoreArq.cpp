@@ -204,32 +204,95 @@ void shoBigFile(Node* no)
     uintmax_t maxsz = getmaxsize(no, 0);
     printBIG(no, maxsz);
 }
-// Função que exibe o menu e processa as escolhas do usuário
-void subMenu(Node *root)
-{
-    string trg;
-    int opt;
-    do
+
+void shoOverXfile(Node* no, uintmax_t tgSz)
+{ // exibe arquivos com tamanho maior que X
+    if (!no->eh_pasta && no->tamanho > tgSz){
+        cout << "\n" << no->caminho << " (" << no->tamanho << " bytes)" <<"\n";
+    }
+    if (no->eh_pasta)
     {
-
-        // Exibe o submenu search
-        cout << "\n=== SEARCH MENU ===\n";
-        cout << "1. Exibir arquivos com extensão especifica\n";
-        cout << "2. exibir os maiores arquivos\n";
-        cout << "0. Sair\n";
-        cout << "Escolha uma opção: ";
-
-        // Validação para evitar erro caso o usuário digite letras
-        if (!(cin >> opt))
+        for (size_t i = 0; i < no->filhos.size(); ++i)
         {
-            cin.clear();             // Limpa o estado de erro do cin
-            cin.ignore(10000, '\n'); // Descarta o restante da linha
-            cout << "Entrada inválida. Tente novamente.\n";
-            continue;
+            shoOverXfile(no->filhos[i], tgSz);
         }
+    }
+}
 
-        switch (opt)
+size_t gtWide(Node* no, size_t maxW){
+    if (no->eh_pasta) {
+        if (no->filhos.size() > maxW) maxW = no->filhos.size();
+    }
+    for (size_t i = 0; i < no->filhos.size(); ++i)
+    {
+        maxW = gtWide(no->filhos[i], maxW);
+    }
+    return maxW;
+}
+
+void printWide(Node* no, size_t mLar){
+    
+    if (no->eh_pasta && no->filhos.size() == mLar)
+    {
+        cout << no->caminho << " (" << no->filhos.size() << " filhos, " << no->tamanho << " bytes)\n";
+    }
+    
+    if (no->eh_pasta)
+    {
+        for (size_t i = 0; i < no->filhos.size(); ++i)
         {
+            printWide(no->filhos[i], mLar);
+        }
+    }
+}
+
+void shoWideDir(Node* no)
+{ // exibe folder com maior numero de arquivos (direto)
+    size_t mLar;
+    mLar = gtWide(no, 0);
+    printWide(no, mLar);
+    
+}
+void shoEmpDir(Node* no){
+    if (no->eh_pasta && no->filhos.size() == 0)
+    {
+        cout << no->caminho << "\n";
+    }
+    if (no->eh_pasta)
+    {
+        for (size_t i = 0; i < no->filhos.size(); ++i)
+        {
+            shoEmpDir(no->filhos[i]);
+        }
+    }
+}
+
+
+void subMenu(Node* root){
+uintmax_t tgSz;
+string trg;
+int opt;
+do {
+    
+    //Exibe o submenu search
+    cout << "\n=== SEARCH MENU ===\n";
+    cout << "1. Exibir arquivos com extensão especifica\n";
+    cout << "2. exibir os maiores arquivos\n";
+    cout << "3. exibir pastas vazias\n";
+    cout << "4. exibir pastas mais largas\n";
+    cout << "5. exibir arquivos maiores que determinado tamanho\n";
+    cout << "0. Sair\n";
+    cout << "Escolha uma opção: ";
+
+    // Validação para evitar erro caso o usuário digite letras
+    if (!(cin >> opt)) {
+        cin.clear();              // Limpa o estado de erro do cin
+        cin.ignore(10000, '\n');  // Descarta o restante da linha
+        cout << "Entrada inválida. Tente novamente.\n";
+        continue;
+    }
+
+    switch (opt) {
 
         case 1:
             cout << "Target extension: ";
@@ -239,18 +302,28 @@ void subMenu(Node *root)
         case 2:
             shoBigFile(root);
             break;
+        case 3:
+            shoEmpDir(root);
+            break;
+        case 4:
+            shoWideDir(root);
+            break;
+        case 5:
+            cout << "Target size: ";
+            cin >> tgSz;
+            shoOverXfile(root, tgSz);
+            break;
 
-        case 0:                        // Caso 0: Sair do programa
-            cout << "Encerrando...\n"; // Finaliza o programa
+        case 0:                          // Caso 0: Sair do programa
+            cout << "Encerrando...\n";   // Finaliza o programa
             break;
 
         default:                         // Caso inválido: Opção fora do menu
             cout << "Opção inválida.\n"; // Opção fora do menu
-        }
+    }
 
-    } while (opt != 0); // Continua até o usuário escolher "Sair" digitando 0
+} while (opt != 0); // Continua até o usuário escolher "Sair" digitando 0
 }
-
 // Função que exibe o menu e processa as escolhas do usuário
 void menu(Node *raiz)
 {
