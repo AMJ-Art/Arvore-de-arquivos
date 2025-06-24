@@ -1,6 +1,5 @@
-//O QUE FALTA ATÉ O MOMENTO
+    //O QUE FALTA ATÉ O MOMENTO
     //EXIBIR O MAIOR TAMANHO E SEU ARQUIVO/PASTA
-    //PASSAR PARA HTML
 
 // Inclusão das bibliotecas necessárias
 #include <iostream>       // Para entrada e saída padrão
@@ -8,6 +7,7 @@
 #include <string>         // Para manipulação de strings
 #include <filesystem>     // Para manipular o sistema de arquivos (disponível no C++17+)
 #include <iomanip>        // Para formatações
+#include <fstream>        // Para manipulação de fluxo de dados em arquivos
 
 using namespace std;
 namespace fs = filesystem;     // Alias para facilitar o uso de std::filesystem
@@ -75,7 +75,7 @@ void exibir_arvore(Node* no, const string& prefixo = "", bool eh_ultimo = true) 
         for (size_t i = 0; i < no->filhos.size(); ++i) {
             // Verifica se este é o último filho (para ajustar o prefixo e o símbolo └──)
             bool ultimo_filho = (i == no->filhos.size() - 1);
-            
+
             // Chama recursivamente com prefixo ajustado:
             // Se este nó é o último, o prefixo recebe "    "
             // Caso contrário, o prefixo recebe "│   " para manter a linha vertical
@@ -95,6 +95,70 @@ void deletar_arvore(Node* no) {
     delete no; // Libera o próprio nó
 }
 
+//Constroi a arvore em forma de string, para depois passar para função de criar arquivo HTML
+string gerarArvoreHtml(Node *no, const string& prefixo = "", bool eh_ultimo = true){
+    string html;
+
+    html += prefixo; //Adiciona o prefixo por causa da identação
+
+    if(!prefixo.empty()){
+        html += eh_ultimo ? "└──" : "├──"; //Adiciona os simbolos
+    }
+
+    if(no->eh_pasta){
+        html += no->nome + " (" + to_string(no->filhos.size()) + " filhos, " + to_string(no->tamanho) + " bytes)\n";
+    } else {
+        html += no->nome + " (" + to_string(no->tamanho) + " bytes)\n";
+    }
+
+
+    if (no->eh_pasta) {
+        for (size_t i = 0; i < no->filhos.size(); ++i) {      //Percorre todos os filhos
+            bool ultimo_filho = (i == no->filhos.size() - 1); //Identifica o ultimo filho
+            string novo_prefixo = prefixo + (eh_ultimo ? "    " : "│   "); //Constroi o prefixo
+            html += gerarArvoreHtml(no->filhos[i], novo_prefixo, ultimo_filho); //Chama a recursividade
+        }
+    }
+
+    return html;
+}
+
+//Salva o arquivo HTML
+void salvarArvoreHtml(Node* raiz, const string& caminhoArquivo = "arvore.html") {
+
+    ofstream htmlFile(caminhoArquivo); //Abre o arquivo, permitindo o fluxo de dados
+
+    if (!htmlFile.is_open()) { //Se não abrir...
+        cerr << "Erro ao criar o arquivo HTML!" << endl; //cerr imprime uma mensagem de erro
+        return;
+    }
+
+    // Cabeçalho HTML com estilo monoespaçado (para manter alinhamento)
+    // R(de Raw) passa a string bruta, na exata mesma forma que foi enviada
+    htmlFile << R"(
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Árvore de Diretórios</title>
+    <style>
+        body { font-family: monospace; margin: 20px; white-space: pre; }
+    </style>
+</head>
+<body>
+)";
+
+    // Conteúdo da árvore (texto puro, sem tags HTML)
+    htmlFile << gerarArvoreHtml(raiz);
+
+    // Fecha o HTML
+    htmlFile << R"(
+</body>
+</html>
+)";
+
+    htmlFile.close(); //Fecha arquivo
+    cout << "HTML criado com sucesso!" << endl;
+}
 
 void shoExtFile(Node *no, string extInp)
 { // exibe arquivos com extensão especifica
@@ -114,17 +178,17 @@ void shoExtFile(Node *no, string extInp)
 }
 
 // Função que exibe o menu e processa as escolhas do usuário
-
-
-// Função que exibe o menu e processa as escolhas do usuário
 void menu(Node* raiz) {
     int opcao;
+    string textoHtml;
+    string trg;
     do {
         //Exibe o menu
         cout << "\n=== MENU ===\n";
         cout << "1. Exibir árvore completa\n";
+        cout << "2. Exportar arvore para HTML";
+        cout << "3. Exibir arquivos com ext especial\n";
         cout << "0. Sair\n";
-        cout << "2. exibir arquivos com ext especial\n";
         cout << "Escolha uma opção: ";
 
         // Validação para evitar erro caso o usuário digite letras
@@ -138,24 +202,30 @@ void menu(Node* raiz) {
         switch (opcao) {
             case 1:                         // Caso 1: Exibe a árvore completa
                 cout << "\n"                // Exibe o caminho, quantidade de filhos e tamanho total para melhor entendimento da visualização
-                     << raiz->caminho 
-                     << " (" << raiz->filhos.size() 
-                     << " filhos, " << raiz->tamanho 
+                     << raiz->caminho
+                     << " (" << raiz->filhos.size()
+                     << " filhos, " << raiz->tamanho
                      << " bytes)" << endl;
                 exibir_arvore(raiz);        // Exibe a árvore completa a partir da raiz
                 cout << endl;
-                break;                
-            
-            case 0:                          // Caso 0: Sair do programa
-                cout << "Encerrando...\n";   // Finaliza o programa
                 break;
 
             case 2:
+                cout << "Criando HTML..." << "\n" << endl;
+                salvarArvoreHtml(raiz);
+                break;
+
+            case 3:
                 cout << "Target extension: ";
                 cin >> trg;
                 shoExtFile(raiz, trg);
                 break;
-            default:                         // Caso inválido: Opção fora do menu          
+
+            case 0:                          // Caso 0: Sair do programa
+                cout << "Encerrando...\n";   // Finaliza o programa
+                break;
+
+            default:                         // Caso inválido: Opção fora do menu
                 cout << "Opção inválida.\n"; // Opção fora do menu
         }
 
