@@ -255,7 +255,6 @@ void subMenu(Node *root)
 void menu(Node *raiz)
 {
     int opcao;
-    string textoHtml;
 
     do
     {
