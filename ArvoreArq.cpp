@@ -260,9 +260,6 @@ void menu(Node* raiz) {
 }
 
 
-void shoBigFile()
-{ // exibe arquivos que possuem o maior tamanho
-}
 
 void shoOverXfile()
 { // exibe arquivos com tamanho maior que X
