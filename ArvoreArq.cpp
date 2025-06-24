@@ -209,7 +209,7 @@ void menu(Node* raiz) {
         //Exibe o menu
         cout << "\n=== MENU ===\n";
         cout << "1. Exibir árvore completa\n";
-        cout << "2. Exportar arvore para HTML";
+        cout << "2. Exportar arvore para HTML\n";
         cout << "3. Exibir arquivos com ext especial\n";
         cout << "0. Sair\n";
         cout << "Escolha uma opção: ";
