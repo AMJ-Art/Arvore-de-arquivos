@@ -176,7 +176,30 @@ void shoExtFile(Node *no, string extInp)
     }
     return;
 }
+uintmax_t getmaxsize(Node* no, uintmax_t maxsize)
+{ // acha o maior tamanho !!por algum motivo está devolvendo todos os valores ao mesmo tempo
 
+    for (size_t i = 0; i < no->filhos.size(); ++i)
+    {
+        maxsize = getmaxsize(no->filhos[i], maxsize);
+    }
+    if(no->tamanho>maxsize && !no->eh_pasta) maxsize = no->tamanho;
+    
+    return maxsize;
+}
+void shoBigFile(Node* no)
+{ // exibe arquivos que possuem o maior tamanho
+    uintmax_t maxsz = getmaxsize(no, 0);
+
+    if(no->tamanho==maxsz){
+        cout << no->caminho << " (" << no->tamanho << " bytes)" <<"\n";
+    }
+    for (size_t i = 0; i < no->filhos.size(); ++i)
+    {
+     shoBigFile(no->filhos[i]);   
+    }
+    
+}
 // Função que exibe o menu e processa as escolhas do usuário
 void menu(Node* raiz) {
     int opcao;
