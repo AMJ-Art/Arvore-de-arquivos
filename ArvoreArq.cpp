@@ -160,15 +160,15 @@ void salvarArvoreHtml(Node* raiz, const string& caminhoArquivo = "arvore.html") 
 void shoExtFile(Node *no, string extInp)
 { // exibe arquivos com extensão especifica
 
-    if (no->nome.size() >= extInp.size() && std::equal(no->nome.end() - extInp.size(), no->nome.end(), extInp.begin()))
+    if (no->nome.size() >= extInp.size() && std::equal(no->nome.end() - extInp.size(), no->nome.end(), extInp.begin())) //detecta caso o arquivo termine com a extensão alvo
     {
-        cout << no->caminho << " (" << no->tamanho << " bytes)" <<"\n";
+        cout << no->caminho << " (" << no->tamanho << " bytes)" <<"\n"; //print
     }
-    if (no->eh_pasta)
+    if (no->eh_pasta) // caso seja uma pasta repete o processo para os filhos
     {
-        for (size_t i = 0; i < no->filhos.size(); ++i)
+        for (size_t i = 0; i < no->filhos.size(); ++i) // itera pelos filhos
         {
-            shoExtFile(no->filhos[i], extInp);
+            shoExtFile(no->filhos[i], extInp); // verifica recursivamente o arquivo atual
         }
     }
     return;
@@ -176,69 +176,70 @@ void shoExtFile(Node *no, string extInp)
 uintmax_t getmaxsize(Node* no, uintmax_t maxsize)
 { // acha o maior tamanho
 
-    if (!no->eh_pasta) {
-        if (no->tamanho > maxsize) maxsize = no->tamanho;
+    if (!no->eh_pasta) { // detecta arquivols
+        if (no->tamanho > maxsize) maxsize = no->tamanho; // se o arquivo é maior que o tamanho maximo atual atualiza o valor para o tamanho do arquivo
     }
-    for (size_t i = 0; i < no->filhos.size(); ++i)
+    for (size_t i = 0; i < no->filhos.size(); ++i) // itera pelos filhos
     {
-        maxsize = getmaxsize(no->filhos[i], maxsize);
+        maxsize = getmaxsize(no->filhos[i], maxsize); // recursivamente busca pela arvore o maior valor e armazena ele em maxsize
     }
-    return maxsize;
+    return maxsize; // devolve maxsize
 }
 
 void printBIG(Node* no, uintmax_t maxsz){
-    if(no->tamanho==maxsz){
-        cout << no->caminho << " (" << no->tamanho << " bytes)" <<"\n";
+   // print dos arquivos com maior tamanho
+    if(no->tamanho==maxsz && !no->eh_pasta){ // verifica se o arquivo possui tamanho maximo e é arquivo
+        cout << no->caminho << " (" << no->tamanho << " bytes)" <<"\n"; // print do caminho
     }
-    for (size_t i = 0; i < no->filhos.size(); ++i)
+    for (size_t i = 0; i < no->filhos.size(); ++i) // itera pelos filhos
     {
-     printBIG(no->filhos[i], maxsz);   
+     printBIG(no->filhos[i], maxsz);   // recursivamente move pela arvore, printando arquivos validos
     }
 }
 
 void shoBigFile(Node* no)
 { // exibe arquivos que possuem o maior tamanho
-    uintmax_t maxsz = getmaxsize(no, 0);
-    printBIG(no, maxsz);
+    uintmax_t maxsz = getmaxsize(no, 0); // armazena tamanho maximo da arvore
+    printBIG(no, maxsz); // printa arquivos validos
 }
 
 void shoOverXfile(Node* no, uintmax_t tgSz)
 { // exibe arquivos com tamanho maior que X
-    if (!no->eh_pasta && no->tamanho > tgSz){
-        cout << "\n" << no->caminho << " (" << no->tamanho << " bytes)" <<"\n";
+    if (!no->eh_pasta && no->tamanho > tgSz){ // detecta se o arquivo é arquivo e maior que o tamanho alvo
+        cout << "\n" << no->caminho << " (" << no->tamanho << " bytes)" <<"\n"; // printa caminho
     }
-    if (no->eh_pasta)
+    if (no->eh_pasta) // se é pasta
     {
-        for (size_t i = 0; i < no->filhos.size(); ++i)
+        for (size_t i = 0; i < no->filhos.size(); ++i) // itera por filhos
         {
-            shoOverXfile(no->filhos[i], tgSz);
+            shoOverXfile(no->filhos[i], tgSz); // recursivamente verifica os valores da arvore
         }
     }
 }
 
 size_t gtWide(Node* no, size_t maxW){
-    if (no->eh_pasta) {
-        if (no->filhos.size() > maxW) maxW = no->filhos.size();
+    if (no->eh_pasta) { // verifica se é pasta
+        if (no->filhos.size() > maxW) maxW = no->filhos.size(); // se o numero de filhos é maior que o maximo anterior atualiza o maximo
     }
-    for (size_t i = 0; i < no->filhos.size(); ++i)
+    for (size_t i = 0; i < no->filhos.size(); ++i) // itera pelos filhos
     {
-        maxW = gtWide(no->filhos[i], maxW);
+        maxW = gtWide(no->filhos[i], maxW); // recursivamente verifica a arvore
     }
-    return maxW;
+    return maxW; // devolve o maximo
 }
 
 void printWide(Node* no, size_t mLar){
     
-    if (no->eh_pasta && no->filhos.size() == mLar)
+    if (no->eh_pasta && no->filhos.size() == mLar) // verifica se a pasta possui largura maxima
     {
-        cout << no->caminho << " (" << no->filhos.size() << " filhos, " << no->tamanho << " bytes)\n";
+        cout << no->caminho << " (" << no->filhos.size() << " filhos, " << no->tamanho << " bytes)\n"; // printa caminho
     }
     
     if (no->eh_pasta)
     {
-        for (size_t i = 0; i < no->filhos.size(); ++i)
+        for (size_t i = 0; i < no->filhos.size(); ++i) // verifica filhos
         {
-            printWide(no->filhos[i], mLar);
+            printWide(no->filhos[i], mLar); // recursivamente verifica os arquivos da arvore por diretorios compativeis
         }
     }
 }
@@ -246,26 +247,26 @@ void printWide(Node* no, size_t mLar){
 void shoWideDir(Node* no)
 { // exibe folder com maior numero de arquivos (direto)
     size_t mLar;
-    mLar = gtWide(no, 0);
-    printWide(no, mLar);
+    mLar = gtWide(no, 0); // acha o valor maximo de largura entre as pastas
+    printWide(no, mLar); // devolve as pastas com largura maxima
     
 }
 void shoEmpDir(Node* no){
-    if (no->eh_pasta && no->filhos.size() == 0)
+    if (no->eh_pasta && no->filhos.size() == 0) // detecta se é uma pasta vazia
     {
-        cout << no->caminho << "\n";
+        cout << no->caminho << "\n"; //printa caminho
     }
     if (no->eh_pasta)
     {
-        for (size_t i = 0; i < no->filhos.size(); ++i)
+        for (size_t i = 0; i < no->filhos.size(); ++i) // itera pelos filhos
         {
-            shoEmpDir(no->filhos[i]);
+            shoEmpDir(no->filhos[i]); // recursivamente busca pela arvore por diretorios compativeis
         }
     }
 }
 
 
-void subMenu(Node* root){
+void subMenu(Node* root){ // menu de busca especial
 uintmax_t tgSz;
 string trg;
 int opt;
@@ -289,11 +290,11 @@ do {
         continue;
     }
 
-    switch (opt) {
+    switch (opt) { // submenu
 
         case 1:
             cout << "Target extension: ";
-            cin >> trg;
+            cin >> trg; //armazena alvo
             cout << "Exibindo arquivos com extensão (" << trg << "): \n";
             shoExtFile(root, trg);
             break;
@@ -311,7 +312,7 @@ do {
             break;
         case 5:
             cout << "Target size: ";
-            cin >> tgSz;
+            cin >> tgSz; // armazena tamanho alvo
             if(tgSz < 0) { // Verifica se o tamanho é negativo
                 cout << "Tamanho inválido. Deve ser um número positivo.\n";
                 break;
