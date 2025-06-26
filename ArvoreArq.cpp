@@ -314,7 +314,7 @@ do {
             cout << "Target size: ";
             cin >> tgSz; // armazena tamanho alvo
             if(tgSz < 0) { // Verifica se o tamanho é negativo
-                cout << "Tamanho inválido. Deve ser um número positivo.\n";
+                cerr << "Tamanho inválido. Deve ser um número positivo.\n";
                 break;
             }
             cout << "Exibindo arquivos maiores que " << tgSz << " bytes:\n";
@@ -385,19 +385,6 @@ void menu(Node *raiz)
         }
 
     } while (opcao != 0); // Continua até o usuário escolher "Sair" digitando 0
-}
-
-
-void shoOverXfile()
-{ // exibe arquivos com tamanho maior que X
-}
-
-void shoWideDir()
-{ // exibe folder com maior numero de arquivos (direto)
-}
-
-void shoEmptyDir()
-{ // exibe folder vazio
 }
 
 // Função principal do programa
